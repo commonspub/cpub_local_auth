@@ -46,7 +46,7 @@ defmodule CommonsPub.LocalAuth.LoginCredential.Migration do
   def migrate_login_credential(index_opts \\ [], dir \\ direction())
 
   def migrate_login_credential(index_opts, :up) do
-    index_opts = Keyword.put_new(index_opts, :using, "hash")
+    # index_opts = Keyword.put_new(index_opts, :using, "hash")
     create_mixin_table(LoginCredential) do
       add :identity, :text, null: false
       add :password_hash, :text, null: false
