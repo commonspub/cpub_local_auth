@@ -43,9 +43,9 @@ defmodule CommonsPub.Auth.LoginCredential.Migration do
 
   @source LoginCredential.__schema__(:source)
 
-  def migrate_local_credential(index_opts \\ [], dir \\ direction())
+  def migrate_login_credential(index_opts \\ [], dir \\ direction())
 
-  def migrate_local_credential(index_opts, :up) do
+  def migrate_login_credential(index_opts, :up) do
     index_opts = Keyword.put_new(index_opts, :using, "hash")
     create_mixin_table(LoginCredential) do
       add :identity, :text, null: false
@@ -54,7 +54,7 @@ defmodule CommonsPub.Auth.LoginCredential.Migration do
     create_if_not_exists(unique_index(@source, [:identity], index_opts))
   end
 
-  def migrate_local_credential(_index_opts, :down) do
+  def migrate_login_credential(_index_opts, :down) do
     drop_if_exists(unique_index(@source, [:identity]))
     drop_mixin_table(LoginCredential)
   end
