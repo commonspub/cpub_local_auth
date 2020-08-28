@@ -35,7 +35,7 @@ defmodule CommonsPub.LocalAuth.LoginCredential do
   def hash_password(changeset), do: changeset
 
 end
-defmodule CommonsPub.Auth.LoginCredential.Migration do
+defmodule CommonsPub.LocalAuth.LoginCredential.Migration do
 
   import Ecto.Migration
   import Pointers.Migration
