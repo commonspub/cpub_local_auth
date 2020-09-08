@@ -15,17 +15,17 @@ defmodule CommonsPub.LocalAuth.LoginCredential do
 
   mixin_schema do
     field :identity, :string
+    field :password, :string, virtual: true
     field :password_hash, :string
   end
 
-  @cast [:identity, :password]
-  @required @cast
+  @defaults [
+    cast:     [:identity, :password],
+    required: [:identity, :password],
+  ]
 
-  def changeset(cred \\ %LoginCredential{}, attrs) do
-    config = Changesets.config(Changesets.verb(cred), [])
-    cred
-    |> Changesets.rename_cast(attrs, config, @cast)
-    |> Changesets.validate_required(attrs, config, @required)
+  def changeset(cred \\ %LoginCredential{}, attrs, opts \\ []) do
+    Changesets.auto(cred, attrs, opts, @defaults)
     |> Changeset.unique_constraint(:identity)
     |> hash_password()
   end
@@ -46,7 +46,6 @@ defmodule CommonsPub.LocalAuth.LoginCredential.Migration do
   def migrate_login_credential(index_opts \\ [], dir \\ direction())
 
   def migrate_login_credential(index_opts, :up) do
-    # index_opts = Keyword.put_new(index_opts, :using, "hash")
     create_mixin_table(LoginCredential) do
       add :identity, :text, null: false
       add :password_hash, :text, null: false
